@@ -1,0 +1,41 @@
+workflows:
+  release_ios_android:
+    name: Release to TestFlight + Android
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      android_signing:
+        keystore_reference: your_keystore_ref  # set in Codemagic UI
+      vars:
+        APP_STORE_CONNECT_ISSUER_ID: Encrypted(...)
+        APP_STORE_CONNECT_KEY_IDENTIFIER: Encrypted(...)
+        APP_STORE_CONNECT_PRIVATE_KEY: Encrypted(...)
+    scripts:
+      - name: Install Flutter packages
+        script: flutter pub get
+
+      # Android builds
+      - name: Build Android APK and AAB
+        script: |
+          flutter build apk --release
+          flutter build appbundle --release
+
+      # iOS build for TestFlight
+      - name: Build iOS IPA
+        script: |
+          flutter build ipa --release \
+            --export-options-plist=ios/Runner/ExportOptions.plist
+
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/bundle/release/app-release.aab
+      - build/ios/ipa/*.ipa
+
+    publishing:
+      app_store_connect:
+        auth:
+          issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+          key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+          private_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        submit_to_testflight: true
