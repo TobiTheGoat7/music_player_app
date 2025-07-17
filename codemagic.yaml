@@ -6,7 +6,7 @@ workflows:
       flutter: stable
       xcode: latest
       android_signing:
-        keystore_reference: your_keystore_ref  # set in Codemagic UI
+        keystore_reference: my_keystore  # set in Codemagic UI
       vars:
         APP_STORE_CONNECT_ISSUER_ID: Encrypted(...)
         APP_STORE_CONNECT_KEY_IDENTIFIER: Encrypted(...)
