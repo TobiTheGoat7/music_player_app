@@ -3,14 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:music_player_app/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
-  @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,14 +26,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
             //switch
             CupertinoSwitch(
-              value:
-                  Provider.of<ThemeProvider>(context, listen: false).isDarkMode,
-              onChanged:
-                  (value) =>
-                      Provider.of<ThemeProvider>(
-                        context,
-                        listen: false,
-                      ).toggleTheme(),
+              value: context.watch<ThemeProvider>().isDarkMode,
+              onChanged: (value) => context.read<ThemeProvider>().toggleTheme(),
             ),
           ],
         ),
