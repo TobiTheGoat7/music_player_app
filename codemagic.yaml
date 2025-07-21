@@ -6,10 +6,7 @@ workflows:
       flutter: stable
       xcode: latest
       android_signing:
-        - keystore: $CM_KEYSTORE
-          keystore_password: $CM_KEYSTORE_PASSWORD
-          key_alias: $CM_KEY_ALIAS
-          key_password: $CM_KEY_PASSWORD
+        - release_keystore
       vars:
         APP_STORE_CONNECT_ISSUER_ID: Encrypted(...)
         APP_STORE_CONNECT_KEY_IDENTIFIER: Encrypted(...)
@@ -34,10 +31,4 @@ workflows:
       - build/app/outputs/bundle/release/app-release.aab
       - build/ios/ipa/*.ipa
 
-    publishing:
-      app_store_connect:
-        auth:
-          issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-          key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
-          private_key: $APP_STORE_CONNECT_PRIVATE_KEY
-        submit_to_testflight: true
+   
