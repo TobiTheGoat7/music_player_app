@@ -6,22 +6,24 @@ workflows:
       flutter: stable
       xcode: latest
       android_signing:
-        keystore_reference: my_keystore  # set in Codemagic UI
+        - keystore: $CM_KEYSTORE
+          keystore_password: $CM_KEYSTORE_PASSWORD
+          key_alias: $CM_KEY_ALIAS
+          key_password: $CM_KEY_PASSWORD
       vars:
         APP_STORE_CONNECT_ISSUER_ID: Encrypted(...)
         APP_STORE_CONNECT_KEY_IDENTIFIER: Encrypted(...)
         APP_STORE_CONNECT_PRIVATE_KEY: Encrypted(...)
+
     scripts:
       - name: Install Flutter packages
         script: flutter pub get
 
-      # Android builds
       - name: Build Android APK and AAB
         script: |
           flutter build apk --release
           flutter build appbundle --release
 
-      # iOS build for TestFlight
       - name: Build iOS IPA
         script: |
           flutter build ipa --release \
